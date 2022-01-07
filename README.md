@@ -14,3 +14,15 @@ $ make
 ```
 Then use the generated uf2 file to flash to raspberry pi pico.
 
+## Raspberry Pi Pico Wiring
+Connect USB connector
+
+| Raspberry Pi Pico PIN | USB Connector | 
+| --------------------- | ------------- | 
+| VBUS (Pin 40)         | VBUS          | 
+| GND (Pin 38)          | GND           | 
+| GP16 (Pin 21)         | D+            | 
+| GP17 (Pin 22)         | D-            | 
+
+GP16 pin can be reconfigured with macro PIO_USB_DP_PIN.
+
