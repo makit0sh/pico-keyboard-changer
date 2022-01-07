@@ -135,14 +135,6 @@ bool usb_report_check(struct repeating_timer* t) {
         int len = pio_usb_get_in_data(ep, temp, sizeof(temp));
 
         if (len > 0) {
-          printf("%04x:%04x EP 0x%02x:\t", device->vid, device->pid,
-              ep->ep_num);
-          for (int i = 0; i < len; i++) {
-            printf("%02x ", temp[i]);
-          }
-          printf("\n");
-
-
           if (len == 8) { // 6-key rollover, TODO ignoring N-key
             uint8_t modifiers = temp[0];
             uint8_t reserved  = temp[1];
@@ -223,29 +215,29 @@ void tud_hid_set_report_cb(uint8_t instance, uint8_t report_id, hid_report_type_
 {
   (void) instance;
 
-  if (report_type == HID_REPORT_TYPE_OUTPUT)
-  {
-    // Set keyboard LED e.g Capslock, Numlock etc...
-    if (report_id == REPORT_ID_KEYBOARD)
-    {
-      // bufsize should be (at least) 1
-      if ( bufsize < 1 ) return;
+  // if (report_type == HID_REPORT_TYPE_OUTPUT)
+  // {
+  //   // Set keyboard LED e.g Capslock, Numlock etc...
+  //   if (report_id == REPORT_ID_KEYBOARD)
+  //   {
+  //     // bufsize should be (at least) 1
+  //     if ( bufsize < 1 ) return;
 
-      uint8_t const kbd_leds = buffer[0];
+  //     uint8_t const kbd_leds = buffer[0];
 
-      if (kbd_leds & KEYBOARD_LED_CAPSLOCK)
-      {
-        // Capslock On: disable blink, turn led on
-        blink_interval_ms = 0;
-        board_led_write(true);
-      }else
-      {
-        // Caplocks Off: back to normal blink
-        board_led_write(false);
-        blink_interval_ms = BLINK_MOUNTED;
-      }
-    }
-  }
+  //     if (kbd_leds & KEYBOARD_LED_CAPSLOCK)
+  //     {
+  //       // Capslock On: disable blink, turn led on
+  //       blink_interval_ms = 0;
+  //       board_led_write(true);
+  //     }else
+  //     {
+  //       // Caplocks Off: back to normal blink
+  //       board_led_write(false);
+  //       blink_interval_ms = BLINK_MOUNTED;
+  //     }
+  //   }
+  // }
 }
 
 //--------------------------------------------------------------------+
