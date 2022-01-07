@@ -1,0 +1,3 @@
+[submodule "Pico-PIO-USB"]
+	path = Pico-PIO-USB
+	url = https://github.com/makit0sh/Pico-PIO-USB
