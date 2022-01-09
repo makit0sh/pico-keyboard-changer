@@ -30,8 +30,9 @@ target_include_directories(Pico-PIO-USB PRIVATE ${PICO_PIO_USB_DIR})
 add_executable(usb_keyboard_changer)
 
 target_sources(usb_keyboard_changer PUBLIC
-        ${CMAKE_CURRENT_LIST_DIR}/main.c
+        ${CMAKE_CURRENT_LIST_DIR}/main.cpp
         ${CMAKE_CURRENT_LIST_DIR}/usb_descriptors.c
+        ${CMAKE_CURRENT_LIST_DIR}/keycode_change.cpp
         )
 
 # Make sure TinyUSB can find tusb_config.h

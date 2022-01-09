@@ -45,6 +45,8 @@
 }
 #endif
 
+#include "keycode_change.hpp"
+
 //--------------------------------------------------------------------+
 // MACRO CONSTANT TYPEDEF PROTYPES
 //--------------------------------------------------------------------+
@@ -71,7 +73,7 @@ void led_blinking_task(void);
 static usb_device_t *usb_device = NULL;
 
 void core1_main(void);
-bool usb_report_check(struct repeating_timer* t);
+void usb_report_check(void);
 
 
 /*------------- MAIN -------------*/
@@ -84,14 +86,11 @@ int main(void)
   multicore_reset_core1();
   multicore_launch_core1(core1_main);
 
-  // Timer for regularly processing USB repor
-  struct repeating_timer timer;
-  add_repeating_timer_us(10, usb_report_check, NULL, &timer);
-
   while (1)
   {
     tud_task(); // tinyusb device task
     led_blinking_task();
+    usb_report_check();
   }
 
   return 0;
@@ -115,7 +114,7 @@ void core1_main() {
   }
 }
 
-bool usb_report_check(struct repeating_timer* t) {
+void usb_report_check() {
   if (blink_interval_ms == BLINK_MOUNTED && usb_device != NULL) {
     for (int dev_idx = 0; dev_idx < PIO_USB_DEVICE_CNT; dev_idx++) {
       usb_device_t *device = &usb_device[dev_idx];
@@ -135,21 +134,26 @@ bool usb_report_check(struct repeating_timer* t) {
         int len = pio_usb_get_in_data(ep, temp, sizeof(temp));
 
         if (len > 0) {
-          if (len == 8) { // 6-key rollover, TODO ignoring N-key
+          if (len >= 8) { // 6-key rollover, TODO ignoring N-key
             uint8_t modifiers = temp[0];
             uint8_t reserved  = temp[1];
+            if (reserved != 0) continue;
             uint8_t keycode[6] = { 0 };
+            uint8_t changed_keycode[6] = { 0 };
+            uint8_t changed_modifiers;
             for (int i = 0; i < 6; i++) {
               keycode[i] = temp[i+2];
             }
+            change_keycode(keycode, modifiers, changed_keycode, changed_modifiers);
 
-            tud_hid_keyboard_report(REPORT_ID_KEYBOARD, modifiers, keycode);
+            tud_hid_keyboard_report(REPORT_ID_KEYBOARD, changed_modifiers, changed_keycode);
+            // tud_hid_keyboard_report(REPORT_ID_KEYBOARD, modifiers, keycode);
           }
         }
       }
     }
   }
-  return true;
+  return;
 }
 
 //--------------------------------------------------------------------+
