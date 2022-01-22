@@ -107,10 +107,10 @@ void core1_main() {
   static pio_usb_configuration_t config = PIO_USB_DEFAULT_CONFIG;
   config.pin_dp = PIO_USB_DP_PIN;
   config.alarm_pool = (void*)alarm_pool_create(2, 1);
-  usb_device = pio_usb_init(&config);
+  usb_device = pio_usb_host_init(&config);
 
   while (true) {
-    pio_usb_task();
+    pio_usb_host_task();
   }
 }
 
