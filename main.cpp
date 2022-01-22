@@ -75,7 +75,6 @@ static usb_device_t *usb_device = NULL;
 void core1_main(void);
 void usb_report_check(void);
 
-
 /*------------- MAIN -------------*/
 int main(void)
 {
@@ -144,7 +143,7 @@ void usb_report_check() {
             for (int i = 0; i < 6; i++) {
               keycode[i] = temp[i+2];
             }
-            change_keycode(keycode, modifiers, changed_keycode, changed_modifiers);
+            change_keycode(keycode, change_modifiers(modifiers), changed_keycode, changed_modifiers);
 
             tud_hid_keyboard_report(REPORT_ID_KEYBOARD, changed_modifiers, changed_keycode);
             // tud_hid_keyboard_report(REPORT_ID_KEYBOARD, modifiers, keycode);

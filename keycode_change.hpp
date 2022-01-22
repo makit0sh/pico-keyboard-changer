@@ -26,8 +26,10 @@
 #pragma once
 
 #include <map>
+#include <vector>
 #include "tusb.h"
 
+uint8_t change_modifiers(const uint8_t modifiers);
 void change_keycode(const uint8_t* keycode, const uint8_t modifiers, uint8_t* changed_keycode, uint8_t& changed_modifiers);
 
 const uint8_t MODIFIER_LEFTCTRL   = TU_BIT(0); ///< Left Control
@@ -50,13 +52,20 @@ struct Key {
     }
 };
 
+static std::vector<std::pair<uint8_t, uint8_t>> modifier_map = {
+    {MODIFIER_LEFTALT, MODIFIER_LEFTGUI}
+};
+
 static std::map<uint8_t, Key> keycode_map_normal = {
     {HID_KEY_EQUAL,  Key(HID_KEY_MINUS, true)}, // =
     {HID_KEY_BRACKET_LEFT,  Key(HID_KEY_BRACKET_RIGHT, false)}, // {
     {HID_KEY_BRACKET_RIGHT,  Key(HID_KEY_EUROPE_1, false)}, // }
     {HID_KEY_APOSTROPHE, Key(HID_KEY_7, true)}, // '
     {HID_KEY_BACKSLASH, Key(HID_KEY_KANJI1, false)}, // \
-    {HID_KEY_GRAVE, Key(HID_KEY_BRACKET_LEFT, true)} // `
+
+    {HID_KEY_GRAVE, Key(HID_KEY_BRACKET_LEFT, true)}, // `
+
+    {HID_KEY_ALT_LEFT, Key(HID_KEY_GUI_LEFT, false)}
 };
 
 static std::map<uint8_t, Key> keycode_map_shifted = {
@@ -74,5 +83,7 @@ static std::map<uint8_t, Key> keycode_map_shifted = {
     {HID_KEY_SEMICOLON, Key(HID_KEY_APOSTROPHE, false)}, // :
     {HID_KEY_APOSTROPHE, Key(HID_KEY_2, true)}, // "
     {HID_KEY_BACKSLASH, Key(HID_KEY_KANJI3, true)}, // |
-    {HID_KEY_GRAVE, Key(HID_KEY_EQUAL, true)} // ~
+    {HID_KEY_GRAVE, Key(HID_KEY_EQUAL, true)}, // ~
+
+    {HID_KEY_ALT_LEFT, Key(HID_KEY_GUI_LEFT, true)}
 };

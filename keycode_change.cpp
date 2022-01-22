@@ -25,6 +25,17 @@
 
 #include "keycode_change.hpp"
 
+uint8_t change_modifiers(const uint8_t modifiers) {
+    uint8_t changed_modifiers = modifiers;
+    for (auto mod_pair : modifier_map) {
+        if ((modifiers&mod_pair.first)!=0) {
+            changed_modifiers &= ~mod_pair.first; 
+            changed_modifiers |= mod_pair.second;
+        }
+    }
+    return changed_modifiers;
+}
+
 void change_keycode(const uint8_t* keycode, const uint8_t modifiers, uint8_t* changed_keycode, uint8_t& changed_modifiers) {
     bool is_shifted = ((modifiers&(MODIFIER_LEFTSHIFT|MODIFIER_RIGHTSHIFT))!=0) ;
 
