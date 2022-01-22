@@ -21,8 +21,8 @@ Connect USB connector
 | --------------------- | ------------- | 
 | VBUS (Pin 40)         | VBUS          | 
 | GND (Pin 38)          | GND           | 
-| GP16 (Pin 21)         | D+            | 
-| GP17 (Pin 22)         | D-            | 
+| GP0 (Pin 0)           | D+            | 
+| GP1 (Pin 1)           | D-            | 
 
 GP16 pin can be reconfigured with macro PIO_USB_DP_PIN.
 

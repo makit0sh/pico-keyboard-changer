@@ -68,7 +68,7 @@ void led_blinking_task(void);
 
 // gpio pin number for usb d plus connector
 // d minus should be connected to PIO_USB_DP_PIN+1 gpio pin
-#define PIO_USB_DP_PIN 16
+#define PIO_USB_DP_PIN 0
 
 static usb_device_t *usb_device = NULL;
 
